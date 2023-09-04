@@ -13,6 +13,10 @@
             <label for="content" class="block text-gray-700 font-bold mb-2">内容:</label>
             <textarea name="content" id="content" class="form-textarea rounded-md shadow-sm w-full"></textarea>
         </div>
+        <div class="mb-4">
+            <label for="status" class="block text-gray-700 font-bold mb-2">ステータス:</label>
+            <input type="text" name="status" id="status" class="form-input rounded-md shadow-sm w-full">
+        </div>
         <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800">作成</button>
     </form>
 </div>

@@ -13,9 +13,7 @@
     <div class="container mx-auto flex justify-between items-center">
         <a class="text-white text-2xl font-semibold" href="/">TaskList</a>
         <ul class="flex space-x-4">
-            <li class="text-white"><a href="/" class="hover:underline">ホーム</a></li>
-            <li class="text-white"><a href="/tasks/show" class="hover:underline">タスク一覧</a></li>
-            <li class="text-white"><a href="/tasks/create" class="hover:underline">タスク作成</a></li>
+        <li class="text-white"><a href="/tasks/create" class="hover:underline">タスク作成</a></li>
         </ul>
     </div>
 </nav>
