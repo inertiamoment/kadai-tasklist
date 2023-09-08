@@ -23,6 +23,6 @@ return new class extends Migration
     Schema::table('tasks', function (Blueprint $table) {
         $table->dropColumn('status');  // statusカラムを削除
         });
-    ß}
+    }
 
 };

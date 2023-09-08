@@ -5,6 +5,7 @@
     <h1 class="text-4xl mb-8">新しいタスクを作成</h1>
     <form action="{{ url('tasks') }}" method="POST">
         @csrf
+        @include('tasks.error_messages')
         <div class="mb-4">
             <label for="title" class="block text-gray-700 font-bold mb-2">タイトル:</label>
             <input type="text" name="title" id="title" class="form-input rounded-md shadow-sm w-full">

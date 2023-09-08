@@ -38,13 +38,13 @@ class TasksController extends Controller
         return view('tasks.create');
     }
 
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'content' => 'required',
-            'status' => 'required|max:10',
-            'title' => 'required',
-        ]);
+public function store(Request $request)
+{
+    $validatedData = $request->validate([
+        'title' => 'required|max:255',
+        'content' => 'required',
+        'status' => 'required|max:10',
+    ]);
 
         $task = new Task;
         $task->content = $validatedData['content'];
@@ -55,18 +55,18 @@ class TasksController extends Controller
         return redirect('/')->with('success', 'Task created successfully');
     }
 
-    public function update(Request $request, $id)
-    {
-        $task = Task::find($id);
-        if ($task === null) {
-            return redirect('/tasks')->with('error', 'Task not found');
-        }
+public function update(Request $request, $id)
+{
+    $task = Task::find($id);
+    if ($task === null) {
+        return redirect('/tasks')->with('error', 'Task not found');
+    }
 
-        $validatedData = $request->validate([
-            'content' => 'required',
-            'status' => 'required|max:10',
-            'title' => 'required',
-        ]);
+    $validatedData = $request->validate([
+        'title' => 'required|max:255',
+        'content' => 'required',
+        'status' => 'required|max:10',
+    ]);
 
         $task->content = $validatedData['content'];
         $task->status = $validatedData['status'];

@@ -14,19 +14,14 @@ return new class extends Migration
 public function up()
 {
     Schema::table('tasks', function (Blueprint $table) {
-        if (!Schema::hasColumn('tasks', 'content')) {
-            $table->string('content');
-        }
-        // 他のカラムの追加処理
+        $table->string('title')->after('id'); // 'id' の後に 'title' カラムを追加
     });
 }
 
-
-    public function down()
-    {
-        Schema::table('tasks', function (Blueprint $table) {
-            $table->dropColumn('content');  // contentカラムを削除
-        });
-    }
-
+public function down()
+{
+    Schema::table('tasks', function (Blueprint $table) {
+        $table->dropColumn('title');
+    });
+}
 };
