@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Task;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
 
 class TasksController extends Controller
 {
@@ -40,16 +41,10 @@ class TasksController extends Controller
 
 public function store(Request $request)
 {
-    $validatedData = $request->validate([
-        'title' => 'required|max:255',
-        'content' => 'required',
-        'status' => 'required|max:10',
-    ]);
-
         $task = new Task;
-        $task->content = $validatedData['content'];
-        $task->status = $validatedData['status'];
-        $task->title = $validatedData['title'];
+        $task->content = $request->input('content');
+        $task->status = $request->input('status');
+        $task->title = $request->input('title');
         $task->save();
 
         return redirect('/')->with('success', 'Task created successfully');
@@ -62,15 +57,9 @@ public function update(Request $request, $id)
         return redirect('/tasks')->with('error', 'Task not found');
     }
 
-    $validatedData = $request->validate([
-        'title' => 'required|max:255',
-        'content' => 'required',
-        'status' => 'required|max:10',
-    ]);
-
-        $task->content = $validatedData['content'];
-        $task->status = $validatedData['status'];
-        $task->title = $validatedData['title'];
+        $task->content = $request->input('content');
+        $task->status = $request->input('status');
+        $task->title = $request->input('title');
         $task->save();
 
         return redirect('/tasks/' . $id)->with('success', 'Task updated successfully');

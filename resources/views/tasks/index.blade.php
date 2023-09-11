@@ -10,7 +10,7 @@
             <h2 class="text-2xl font-semibold">{{ $task->title }}</h2>
             <div>
                 <span class="text-gray-600">ステータス: {{ $task->status }}</span>
-                <a href="/tasks/{{ $task->id }}" class="text-blue-500 ml-4">詳細</a>
+                <a href="/tasks/{{ $task->id }}" class="text-blue-500 ml-4">編集</a>
             </div>
         </li>
         @endforeach
