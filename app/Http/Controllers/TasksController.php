@@ -16,64 +16,85 @@ class TasksController extends Controller
         return view('tasks.index', ['tasks' => $tasks]);
     }
 
-    public function show($id)
+public function show($id)
     {
-        $task = Task::find($id);
-        if ($task === null) {
-            return redirect('/tasks')->with('error', 'Task not found');
+    $task = Task::find($id);
+    if ($task === null) {
+        return redirect('/tasks')->with('error', 'Task not found');
         }
-        return view('tasks.show', ['task' => $task]);
+    // 現在のユーザーIDとタスクの所有者のIDが一致しない場合、エラーメッセージを表示してリダイレクト
+    if (Auth::id() !== $task->user_id) {
+        return redirect('/tasks')->with('error', 'Unauthorized access.');
+        }
+    
+    return view('tasks.show', ['task' => $task]);
     }
-
-    public function edit($id)
+    
+public function edit($id)
     {
-        $task = Task::find($id);
-        if ($task === null) {
-            return redirect('/tasks')->with('error', 'Task not found');
+    $task = Task::find($id);
+    if ($task === null) {
+        return redirect('/tasks')->with('error', 'Task not found');
         }
-        return view('tasks.edit', ['task' => $task]);
+    // 現在のユーザーIDとタスクの所有者のIDが一致しない場合、エラーメッセージを表示してリダイレクト
+    if (Auth::id() !== $task->user_id) {
+        return redirect('/tasks')->with('error', 'Unauthorized access.');
+        }
+        
+    return view('tasks.edit', ['task' => $task]);
     }
-
+    
     public function create()
     {
         return view('tasks.create');
     }
 
 public function store(Request $request)
-{
+    {   
+        {
         $task = new Task;
         $task->content = $request->input('content');
         $task->status = $request->input('status');
         $task->title = $request->input('title');
         $task->save();
-
+        }
         return redirect('/')->with('success', 'Task created successfully');
     }
-
 public function update(Request $request, $id)
-{
+    {
     $task = Task::find($id);
     if ($task === null) {
         return redirect('/tasks')->with('error', 'Task not found');
     }
 
-        $task->content = $request->input('content');
-        $task->status = $request->input('status');
-        $task->title = $request->input('title');
-        $task->save();
+    // 現在のユーザーIDとタスクの所有者のIDが一致しない場合、エラーメッセージを表示してリダイレクト
+    if (Auth::id() !== $task->user_id) {
+        return redirect('/tasks')->with('error', 'Unauthorized access.');
+    }
 
-        return redirect('/tasks/' . $id)->with('success', 'Task updated successfully');
+    $task->content = $request->input('content');
+    $task->status = $request->input('status');
+    $task->title = $request->input('title');
+    $task->save();
+
+    return redirect('/tasks/' . $id)->with('success', 'Task updated successfully');
     }
 
     public function destroy($id)
     {
-        $task = Task::find($id);
-        if ($task === null) {
-            return redirect('/tasks')->with('error', 'Task not found');
-        }
-
-        $task->delete();
-
-        return redirect('/')->with('success', 'Task deleted successfully');
+    $task = Task::find($id);
+    if ($task === null) {
+        return redirect('/tasks')->with('error', 'Task not found');
     }
+
+    // 現在のユーザーIDとタスクの所有者のIDが一致しない場合、エラーメッセージを表示してリダイレクト
+    if (Auth::id() !== $task->user_id) {
+        return redirect('/tasks')->with('error', 'Unauthorized access.');
+    }
+
+    $task->delete();
+
+    return redirect('/')->with('success', 'Task deleted successfully');
+    }
+    
 }

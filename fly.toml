@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for kadai-tasklist on 2023-09-08T04:48:13Z
+# fly.toml app configuration file generated for kadai-tasklist on 2023-09-12T00:58:02Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -20,7 +20,6 @@ console_command = "php /var/www/html/artisan tinker"
   DB_CONNECTION = "pgsql"
   DB_DATABASE = "postgres"
   DB_HOST = "db.ijluvomeqigtivkeiheo.supabase.co"
-  DB_PASSWORD = "jA9B2Z3CPSDGp?2Vå"
   DB_PORT = "5432"
   DB_USERNAME = "postgres"
   LOG_CHANNEL = "stderr"

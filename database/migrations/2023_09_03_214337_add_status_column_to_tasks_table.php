@@ -13,16 +13,24 @@ return new class extends Migration
      */
     public function up()
     {
-    Schema::table('tasks', function (Blueprint $table) {
-        $table->string('status', 10)->nullable();  // statusカラムを追加
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->unsignedBigInteger('user_id')->after('id'); // user_idカラムの追加
+            $table->foreign('user_id')->references('id')->on('users'); // 外部キー制約の追加
+            $table->string('status', 10)->nullable()->after('user_id');  // statusカラムを追加
         });
     }
 
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
-    Schema::table('tasks', function (Blueprint $table) {
-        $table->dropColumn('status');  // statusカラムを削除
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->dropForeign(['user_id']); // 外部キー制約の削除
+            $table->dropColumn('user_id'); // user_idカラムの削除
+            $table->dropColumn('status');  // statusカラムを削除
         });
     }
-
 };

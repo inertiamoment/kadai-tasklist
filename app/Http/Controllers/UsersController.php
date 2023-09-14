@@ -7,10 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;                        // 追加
 use App\Models\User;                                        // 追加
 
-class UsersController extends Controller
-{
-    public function index()                                 // 追加       
-    {                                                       // 追加
+public function index()                                 
+{                                                       
     if (Auth::check()) { // 認証済みの場合
         // 認証済みユーザを取得
         $user = Auth::user();
@@ -20,15 +18,16 @@ class UsersController extends Controller
     } else {
         // ログインしていない場合はログインページにリダイレクト
         return redirect()->route('login');
-    
-    public function show($id)
-    {
-        // idの値でユーザを検索して取得
-        $user = User::findOrFail($id);
-
-        // ユーザ詳細ビューでそれを表示
-        return view('users.show', [
-            'user' => $user,
-        ]);
     }
+}
+
+public function show($id)
+{
+    // idの値でユーザを検索して取得
+    $user = User::findOrFail($id);
+
+    // ユーザ詳細ビューでそれを表示
+    return view('users.show', [
+        'user' => $user,
+    ]);
 }
