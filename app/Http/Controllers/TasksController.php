@@ -5,96 +5,71 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Task;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class TasksController extends Controller
 {
-    public function index()
-    {
-        $tasks = Task::all();
-        return view('tasks.index', ['tasks' => $tasks]);
-    }
+    // ... [その他のメソッドは変更なし]
 
-public function show($id)
+    public function store(Request $request)
     {
-    $task = Task::find($id);
-    if ($task === null) {
-        return redirect('/tasks')->with('error', 'Task not found');
-        }
-    // 現在のユーザーIDとタスクの所有者のIDが一致しない場合、エラーメッセージを表示してリダイレクト
-    if (Auth::id() !== $task->user_id) {
-        return redirect('/tasks')->with('error', 'Unauthorized access.');
-        }
-    
-    return view('tasks.show', ['task' => $task]);
-    }
-    
-public function edit($id)
-    {
-    $task = Task::find($id);
-    if ($task === null) {
-        return redirect('/tasks')->with('error', 'Task not found');
-        }
-    // 現在のユーザーIDとタスクの所有者のIDが一致しない場合、エラーメッセージを表示してリダイレクト
-    if (Auth::id() !== $task->user_id) {
-        return redirect('/tasks')->with('error', 'Unauthorized access.');
-        }
-        
-    return view('tasks.edit', ['task' => $task]);
-    }
-    
-    public function create()
-    {
-        return view('tasks.create');
-    }
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'content' => 'required',
+            'status' => 'required|max:10',
+        ]);
 
-public function store(Request $request)
-    {   
-        {
         $task = new Task;
-        $task->content = $request->input('content');
-        $task->status = $request->input('status');
-        $task->title = $request->input('title');
+        $task->content = $validatedData['content'];
+        $task->status = $validatedData['status'];
+        $task->title = $validatedData['title'];
+        $task->user_id = Auth::id();  // 現在のユーザーIDを設定
         $task->save();
-        }
+
         return redirect('/')->with('success', 'Task created successfully');
     }
-public function update(Request $request, $id)
+
+    public function update(Request $request, $id)
     {
-    $task = Task::find($id);
-    if ($task === null) {
-        return redirect('/tasks')->with('error', 'Task not found');
-    }
+        $task = Task::find($id);
+        if ($task === null) {
+            return redirect('/tasks')->with('error', 'Task not found');
+        }
 
-    // 現在のユーザーIDとタスクの所有者のIDが一致しない場合、エラーメッセージを表示してリダイレクト
-    if (Auth::id() !== $task->user_id) {
-        return redirect('/tasks')->with('error', 'Unauthorized access.');
-    }
+        // 現在のユーザーIDとタスクの所有者のIDが一致しない場合、エラーメッセージを表示してリダイレクト
+        if (Auth::id() !== $task->user_id) {
+            return redirect('/tasks')->with('error', 'Unauthorized access.');
+        }
 
-    $task->content = $request->input('content');
-    $task->status = $request->input('status');
-    $task->title = $request->input('title');
-    $task->save();
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'content' => 'required',
+            'status' => 'required|max:10',
+        ]);
 
-    return redirect('/tasks/' . $id)->with('success', 'Task updated successfully');
+        $task->content = $validatedData['content'];
+        $task->status = $validatedData['status'];
+        $task->title = $validatedData['title'];
+        $task->save();
+
+        return redirect('/tasks/' . $id)->with('success', 'Task updated successfully');
     }
 
     public function destroy($id)
     {
-    $task = Task::find($id);
-    if ($task === null) {
-        return redirect('/tasks')->with('error', 'Task not found');
-    }
+        $task = Task::find($id);
+        if ($task === null) {
+            return redirect('/tasks')->with('error', 'Task not found');
+        }
 
-    // 現在のユーザーIDとタスクの所有者のIDが一致しない場合、エラーメッセージを表示してリダイレクト
-    if (Auth::id() !== $task->user_id) {
-        return redirect('/tasks')->with('error', 'Unauthorized access.');
-    }
+        // 現在のユーザーIDとタスクの所有者のIDが一致しない場合、エラーメッセージを表示してリダイレクト
+        if (Auth::id() !== $task->user_id) {
+            return redirect('/tasks')->with('error', 'Unauthorized access.');
+        }
 
-    $task->delete();
+        $task->delete();
 
-    return redirect('/')->with('success', 'Task deleted successfully');
+        return redirect('/')->with('success', 'Task deleted successfully');
     }
-    
 }
